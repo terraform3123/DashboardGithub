@@ -1,14 +1,12 @@
-import os
 from fastapi import APIRouter
-from github import Github, UnknownObjectException
+from github_service import git_api, error_not_user
 
 router = APIRouter()
-g = Github(os.environ.get("GITHUB_TOKEN"))
 
 @router.get("/usuario/{usuario_id}")
 def buscar_usuario(usuario_id: str):
     try:
-        usuario = g.get_user(usuario_id)
+        usuario = git_api.get_user(usuario_id)
         return {
             "login": usuario.login,
             "nome": usuario.name,
@@ -18,5 +16,5 @@ def buscar_usuario(usuario_id: str):
             "bio_user": usuario.bio,
             "avatar_user": usuario.avatar_url
         }
-    except UnknownObjectException:
+    except error_not_user:
         return {"erro": "Usuário não encontrado"}

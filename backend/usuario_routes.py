@@ -12,7 +12,11 @@ def buscar_usuario(usuario_id: str):
         return {
             "login": usuario.login,
             "nome": usuario.name,
-            "seguidores": usuario.followers
+            "qtd_repositorios_publicos": usuario.public_repos,
+            "seguidores": usuario.followers,
+            "seguindo": usuario.following,
+            "bio_user": usuario.bio,
+            "avatar_user": usuario.avatar_url
         }
     except UnknownObjectException:
         return {"erro": "Usuário não encontrado"}

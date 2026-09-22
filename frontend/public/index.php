@@ -1,5 +1,9 @@
+<?php
+include_once __DIR__ . '/../includes/view.php'
+?>
+
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="pt-br" data-bs-theme="dark">
     <head>
         <title>Dashboard Page</title>
         <meta charset="utf-8" />
@@ -15,7 +19,17 @@
     <body>
         <main>
             <div class="container">
-                
+                <form action="../includes/api.php" method="post">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                    <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                </form>
+
+                <div>
+                    <?php
+                        print_r($newData['qtd_repositorios_publicos']);
+                    ?>
+                </div>
             </div>
         </main>
         <script

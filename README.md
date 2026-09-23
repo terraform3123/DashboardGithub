@@ -1,3 +1,3 @@
 #COISAS PARA BAIXAR:
 
-uvicorn fastapi pygithub
+uvicorn fastapi pygithub python-dotenv

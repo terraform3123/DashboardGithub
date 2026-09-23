@@ -18,18 +18,23 @@ include_once __DIR__ . '/../includes/view.php'
 
     <body>
         <main>
-            <div class="container">
+            <div class="container d-flex flex-column align-items-center justify-content-center gap-5">
+                <div class="title">
+                    <h1>Dashboard Github</h1>
+                </div>
                 <form action="../includes/api.php" method="post">
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username">
                     <button type="submit" class="btn btn-sm btn-primary">Search</button>
                 </form>
 
-                <div>
-                    <?php
-                        print_r($newData['qtd_repositorios_publicos']);
-                    ?>
-                </div>
+                    <img style="border-radius: 50%; width= 300px; height: 250px;" src="<?= $newData['avatar_user'] ?>" alt="">
+                    <div class="info-label">
+                        <p class="text-center">Usuario: <?= $newData['login'] ?></p>
+                        <p class="text-center">Name: <?= $newData['nome'] ?></p>
+                        <p class="text-center">Public Repositories: <?= $newData['qtd_repositorios_publicos']; ?></p>
+
+                    </div>
             </div>
         </main>
         <script

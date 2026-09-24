@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="./lib/angular.min.js"></script>
+    <script src="./angular/app.js"></script>
+
+    <style>
+        body {
+            background-color: #362c4f;
+            color: #fff;
+        }
+
+        img {
+            border: 10px solid #262038;
+            width: 300px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body ng-app="app" ng-controller="AppController">
+    <div class="container">
+        <div class="row">
+            <button class="btn btn-primary" ng-click="get()">Buscar</button>
+            <img ng-if="usuario" src="{{ usuario.avatar_user }}" style="border-radius: 50%;">
+            <input type="text" class="form-control" ng-model="user_id">
+            <p ng-if="error">{{ error }}</p>
+            <p ng-if="usuario">{{ usuario }}</p>
+        </div>
+    </div>
+</body>
+</html>

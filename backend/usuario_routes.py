@@ -20,4 +20,4 @@ def buscar_usuario(usuario_id: str):
             "avatar_user":user.avatar_url
         }
     except error_not_user:
-        return JSONResponse(status_code=400, content={"erro": "Usuário não encontrado"})
+        return JSONResponse(status_code=404, content={"erro": "Usuário não encontrado"})

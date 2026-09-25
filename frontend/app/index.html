@@ -1,37 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard Github</title>
 
+    <!-- Bootstrap 3.3.7 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <script src="./lib/angular.min.js"></script>
     <script src="./angular/app.js"></script>
 
     <style>
-        body {
-            background-color: #362c4f;
-            color: #fff;
+        :root {
+            --bg-color: #1e192c;
+            --card-bg: #28223a;
+            --input-bg: #362c4f;
+            --accent-color: #8257e5;
+            --accent-hover: #996dff;
+            --text-color: #f5f5f7;
+            --text-secondary: #a8a0bf;
         }
 
-        img {
-            border: 10px solid #262038;
-            width: 300px;
-            height: 100px;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .dashboard-title {
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        /* Form Controls */
+        .custom-input {
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            height: 44px;
+            border-radius: 8px 0 0 8px;
+            box-shadow: none;
+        }
+
+        .custom-input:focus {
+            background-color: var(--input-bg);
+            border-color: var(--accent-color);
+            color: var(--text-color);
+            box-shadow: none;
+        }
+
+        .custom-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-search {
+            background-color: var(--accent-color);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            height: 44px;
+            border-radius: 0 8px 8px 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-search:hover, 
+        .btn-search:focus,
+        .btn-search:active {
+            background-color: var(--accent-hover);
+            color: #fff;
+            outline: none;
+        }
+
+        /* Mensagens */
+        .alert-custom-error {
+            background-color: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-avatar {
+            border: 3px solid var(--accent-color);
+            width: 110px;
+            height: 110px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+
+        .profile-username {
+            color: var(--accent-hover);
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .profile-username:hover {
+            color: #b392ff;
+            text-decoration: underline;
+        }
+
+        /* Tabela de Detalhes */
+        .info-table {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .info-table td {
+            padding: 10px 12px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+            vertical-align: middle !important;
+        }
+
+        .info-table tr:first-child td {
+            border-top: none !important;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            text-align: left;
+            width: 40%;
+        }
+
+        .info-value {
+            font-weight: bold;
+            text-align: right;
+            color: var(--text-color);
+            width: 60%;
         }
     </style>
 </head>
 <body ng-app="app" ng-controller="AppController">
+
     <div class="container">
-        <div class="row">
-            <button class="btn btn-primary" ng-click="get()">Buscar</button>
-            <img ng-if="usuario" src="{{ usuario.avatar_user }}" style="border-radius: 50%;">
-            <input type="text" class="form-control" ng-model="user_id">
-            <p ng-if="error">{{ error }}</p>
-            <p ng-if="usuario">{{ usuario }}</p>
+        <div class="dashboard-card">
+            
+            <h1 class="text-center dashboard-title">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Dashboard Github
+            </h1>
+            
+            <!-- Campo de busca usando Input Group do Bootstrap 3 -->
+            <div class="input-group">
+                <input 
+                    placeholder="Digite o nome de usuário (Github)" 
+                    type="text" 
+                    class="form-control custom-input" 
+                    ng-model="user_id">
+                
+                <span class="input-group-btn">
+                    <button class="btn btn-search" type="button" ng-click="get()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+                    </button>
+                </span>
+            </div>
+            
+            <!-- Erro -->
+            <div ng-if="error" class="alert alert-custom-error text-center" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{ error }}
+            </div>
+            
+            <!-- Perfil do Usuário -->
+            <div ng-if="usuario" class="profile-card text-center">
+                
+                <!-- Avatar (Uso do ng-src para boas práticas AngularJS) -->
+                <img ng-src="{{ usuario.avatar_user || usuario.avatar_url }}" class="img-circle profile-avatar" alt="Avatar">
+                
+                <h3 class="profile-name">{{ usuario.nome || usuario.name || 'Nome não informado' }}</h3>
+                
+                <a ng-if="usuario.login || usuario.username" 
+                   ng-href="https://github.com/{{ usuario.login || usuario.username }}" 
+                   target="_blank" 
+                   class="profile-username">
+                   @{{ usuario.login || usuario.username }}
+                </a>
+
+                <!-- Tabela de detalhes -->
+                <table class="table info-table">
+                    <tr ng-if="usuario.bio">
+                        <td class="info-label">
+                            <span class="glyphicon glyphicon-align-left"></span> Bio
+                        </td>
+                        <td class="info-value">{{ usuario.bio }}</td>
+                    </tr>
+                    <tr ng-if="usuario.location">
+                        <td class="info-label">
+                            <span class="glyphicon glyphicon-map-marker"></span> Local
+                        </td>
+                        <td class="info-value">{{ usuario.location }}</td>
+                    </tr>
+                    <tr ng-if="usuario.public_repos !== undefined">
+                        <td class="info-label">
+                            <span class="glyphicon glyphicon-folder-open"></span> Repositórios
+                        </td>
+                        <td class="info-value">{{ usuario.public_repos }}</td>
+                    </tr>
+                    <tr ng-if="usuario.followers !== undefined">
+                        <td class="info-label">
+                            <span class="glyphicon glyphicon-heart"></span> Seguidores
+                        </td>
+                        <td class="info-value">{{ usuario.followers }}</td>
+                    </tr>
+                </table>
+
+            </div>
+
         </div>
     </div>
+
 </body>
 </html>
